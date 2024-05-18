@@ -20,7 +20,6 @@ function CartProduct({ title, price, imageUrl, quantity, removeFromCart }) {
   );
 }
 
-
 function Cart({ cartProducts, removeFromCart }) {
   return (
     <Container>
@@ -34,7 +33,4 @@ function Cart({ cartProducts, removeFromCart }) {
   );
 }
 
-
 export default Cart;
-
-
