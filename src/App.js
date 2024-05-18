@@ -3,7 +3,9 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
-import CartComponent from './components/Cart'; // Import the Cart component
+
+import CartComponent from './components/CartMod'; // Import the Cart component
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const productsArr = [
