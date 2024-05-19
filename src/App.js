@@ -1,60 +1,49 @@
 import React, { useState } from "react";
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
-import CartComponent from './components/CartMod'; // Import the Cart component
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import Button from "react-bootstrap/Button";
+import Product from "./components/Product";
+import CartComponent from "./components/CartModule"; // Import the Cart component
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const productsArr = [
   {
-    title: 'Colors',
+    title: "Colors",
     price: 100,
-    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%201.png',
+    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
   },
   {
-    title: 'Black and white Colors',
+    title: "Black and white Colors",
     price: 50,
-    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%202.png',
+    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
   },
   {
-    title: 'Yellow and Black Colors',
+    title: "Yellow and Black Colors",
     price: 70,
-    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%203.png',
+    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
   },
   {
-    title: 'Blue Color',
+    title: "Blue Color",
     price: 100,
-    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%204.png',
-  }
+    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%204.png",
+  },
 ];
 
 const initialCartProducts = [
   {
-    title: 'Colors',
+    title: "Colors",
     price: 100,
-    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%201.png',
+    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
     quantity: 1,
   },
   {
-    title: 'Black and white Colors',
+    title: "Black and white Colors",
     price: 50,
-    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%202.png',
+    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
     quantity: 2,
-  }
+  },
 ];
-
-function Product({ title, price, imageUrl }) {
-  return (
-    <div className="product">
-      <img src={imageUrl} alt={title} />
-      <div className="product-details">
-        <h3>{title}</h3>
-        <p>Rs.{price}</p>
-      </div>
-    </div>
-  );
-}
 
 function App() {
   const [showCart, setShowCart] = useState(false);
@@ -64,9 +53,26 @@ function App() {
     setShowCart(!showCart);
   };
 
-  const removeFromCart = (title) => {
-    setCartProducts(cartProducts.filter(product => product.title !== title));
+  const addToCart = (title) => {
+    const selectedProduct = productsArr.find(product => product.title === title);
+  if (selectedProduct) {
+    const existingProductIndex = cartProducts.findIndex(product => product.title === title);
+    if (existingProductIndex !== -1) {
+      const updatedCartProducts = [...cartProducts];
+      updatedCartProducts[existingProductIndex].quantity++;
+      setCartProducts(updatedCartProducts);
+    } else {
+      setCartProducts(prevCartProducts => [...prevCartProducts, { ...selectedProduct, quantity: 1 }]);
+    }
+  }
   };
+
+  const removeFromCart = (title) => {
+    setCartProducts(cartProducts.filter((product) => product.title !== title));
+  };
+
+  const totalProductsInCart = cartProducts.reduce((total, product) => total + (product.quantity || 1), 0);
+
 
   return (
     <div>
@@ -80,20 +86,32 @@ function App() {
           </Nav>
           <Nav>
             <Button variant="outline-warning" onClick={handleCartClick}>
-              My🛒
+              My🛒 <span className="badge bg-primary">{totalProductsInCart}</span>
             </Button>
           </Nav>
         </Container>
       </Navbar>
-      
-      <h2>Products</h2>
-      <div className="product-list">
-        {productsArr.map((product, index) => (
-          <Product key={index} {...product} />
-        ))}
-      </div>
-
-      {showCart && <CartComponent cartProducts={cartProducts} removeFromCart={removeFromCart} />} {/* Conditionally render the Cart component */}
+      <h2 className="text-center mt-4">Products</h2>
+      <br />
+      <Container>
+        <div className="row justify-content-center">
+          {productsArr.map((product, index) => (
+            <div
+              key={index}
+              className="col-md-6 mb-4 d-flex align-items-center justify-content-center"
+            >
+              <Product {...product} addToCart={addToCart} />
+            </div>
+          ))}
+        </div>
+      </Container>
+      {showCart && (
+        <CartComponent
+          cartProducts={cartProducts}
+          removeFromCart={removeFromCart}
+        />
+      )}{" "}
+      {/* Conditionally render the Cart component */}
     </div>
   );
 }
