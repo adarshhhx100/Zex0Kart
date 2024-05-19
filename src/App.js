@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+<<<<<<< HEAD
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -6,6 +7,16 @@ import Button from "react-bootstrap/Button";
 import Product from "./components/Product";
 import CartComponent from "./components/CartModule"; // Import the Cart component
 import "bootstrap/dist/css/bootstrap.min.css";
+=======
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
+
+import CartComponent from './components/CartMod'; // Import the Cart component
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+>>>>>>> 0b2b52d17359d4bb758d9c2e684ff85b84d27ab8
 
 const productsArr = [
   {
@@ -115,5 +126,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
