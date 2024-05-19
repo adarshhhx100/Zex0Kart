@@ -1,22 +1,14 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
-import Product from "./components/Product";
-import CartComponent from "./components/CartModule"; // Import the Cart component
+import Product from "./components/ProductList";
+import About from "./components/About";
+import Home from "./components/Home"; // Import Home component
+import CartComponent from "./components/CartModule"; 
 import "bootstrap/dist/css/bootstrap.min.css";
-=======
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
-
-import CartComponent from './components/CartMod'; // Import the Cart component
-
-import 'bootstrap/dist/css/bootstrap.min.css';
->>>>>>> 0b2b52d17359d4bb758d9c2e684ff85b84d27ab8
 
 const productsArr = [
   {
@@ -66,16 +58,16 @@ function App() {
 
   const addToCart = (title) => {
     const selectedProduct = productsArr.find(product => product.title === title);
-  if (selectedProduct) {
-    const existingProductIndex = cartProducts.findIndex(product => product.title === title);
-    if (existingProductIndex !== -1) {
-      const updatedCartProducts = [...cartProducts];
-      updatedCartProducts[existingProductIndex].quantity++;
-      setCartProducts(updatedCartProducts);
-    } else {
-      setCartProducts(prevCartProducts => [...prevCartProducts, { ...selectedProduct, quantity: 1 }]);
+    if (selectedProduct) {
+      const existingProductIndex = cartProducts.findIndex(product => product.title === title);
+      if (existingProductIndex !== -1) {
+        const updatedCartProducts = [...cartProducts];
+        updatedCartProducts[existingProductIndex].quantity++;
+        setCartProducts(updatedCartProducts);
+      } else {
+        setCartProducts(prevCartProducts => [...prevCartProducts, { ...selectedProduct, quantity: 1 }]);
+      }
     }
-  }
   };
 
   const removeFromCart = (title) => {
@@ -84,48 +76,38 @@ function App() {
 
   const totalProductsInCart = cartProducts.reduce((total, product) => total + (product.quantity || 1), 0);
 
-
   return (
-    <div>
-      <Navbar bg="primary" variant="dark">
-        <Container>
-          <Navbar.Brand href="#home">Z Kart 🛒</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Products</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-          </Nav>
-          <Nav>
-            <Button variant="outline-warning" onClick={handleCartClick}>
-              My🛒 <span className="badge bg-primary">{totalProductsInCart}</span>
-            </Button>
-          </Nav>
-        </Container>
-      </Navbar>
-      <h2 className="text-center mt-4">Products</h2>
-      <br />
-      <Container>
-        <div className="row justify-content-center">
-          {productsArr.map((product, index) => (
-            <div
-              key={index}
-              className="col-md-6 mb-4 d-flex align-items-center justify-content-center"
-            >
-              <Product {...product} addToCart={addToCart} />
-            </div>
-          ))}
-        </div>
-      </Container>
-      {showCart && (
-        <CartComponent
-          cartProducts={cartProducts}
-          removeFromCart={removeFromCart}
-        />
-      )}{" "}
-      {/* Conditionally render the Cart component */}
-    </div>
+    <Router>
+      <div>
+        <Navbar bg="primary" variant="dark">
+          <Container>
+            <Navbar.Brand as={Link} to="/">Z Kart '-' </Navbar.Brand>
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/products">Products</Nav.Link>
+              <Nav.Link as={Link} to="/about">About</Nav.Link>
+            </Nav>
+            <Nav>
+              <Button variant="outline-warning" onClick={handleCartClick}>
+                My🛒 <span className="badge bg-primary">{totalProductsInCart}</span>
+              </Button>
+            </Nav>
+          </Container>
+        </Navbar>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Product products={productsArr} addToCart={addToCart} />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+        {showCart && (
+          <CartComponent
+            cartProducts={cartProducts}
+            removeFromCart={removeFromCart}
+          />
+        )}
+      </div>
+    </Router>
   );
 }
-
 
 export default App;
