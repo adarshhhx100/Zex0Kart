@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/esm/Container";
 import Button from "react-bootstrap/esm/Button";
 
 function Product({ title, price, imageUrl, quantity, addToCart }) {
@@ -13,11 +14,25 @@ function Product({ title, price, imageUrl, quantity, addToCart }) {
           {quantity !== undefined && `Quantity: ${quantity}`}
         </Card.Text>
         <Button variant="primary" onClick={() => addToCart(title)}>
-            Add Product
+          Add Product
         </Button>
       </Card.Body>
     </Card>
   );
 }
 
-export default Product;
+function ProductList({ products, addToCart }) {
+  return (
+    <Container>
+      <div className="row justify-content-center">
+        {products.map((product, index) => (
+          <div key={index} className="col-md-6 mb-4 d-flex align-items-center justify-content-center">
+            <Product {...product} addToCart={addToCart} />
+          </div>
+        ))}
+      </div>
+    </Container>
+  );
+}
+
+export default ProductList;
