@@ -6,7 +6,8 @@ import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import Product from "./components/ProductList";
 import About from "./components/About";
-import Home from "./components/Home"; // Import Home component
+import Home from "./components/Home";
+import Contact from "./components/Contact"; 
 import CartComponent from "./components/CartModule"; 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -86,6 +87,7 @@ function App() {
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/products">Products</Nav.Link>
               <Nav.Link as={Link} to="/about">About</Nav.Link>
+              <Nav.Link as={Link} to="/contact">Contact Us!</Nav.Link>
             </Nav>
             <Nav>
               <Button variant="outline-warning" onClick={handleCartClick}>
@@ -98,6 +100,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Product products={productsArr} addToCart={addToCart} />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
         {showCart && (
           <CartComponent
