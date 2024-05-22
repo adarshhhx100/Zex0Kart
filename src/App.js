@@ -4,54 +4,37 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
-import Product from "./components/ProductList";
+import ProductList from "./components/ProductList";
 import About from "./components/About";
 import Home from "./components/Home";
-import Contact from "./components/Contact"; 
-import CartComponent from "./components/CartModule"; 
+import Contact from "./components/Contact";
+import ShowProduct from "./components/ShowProduct"; // Import ShowProduct component
+import CartComponent from "./components/CartModule";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Your product data array
 const productsArr = [
   {
     title: "Colors",
     price: 100,
     imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
+    additionalImages: [
+      "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
+      "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
+      // Add more additional images here if needed
+    ],
+    reviews: [
+      "Great product!",
+      "Very satisfied with the quality.",
+      // Add more reviews here if needed
+    ]
   },
-  {
-    title: "Black and white Colors",
-    price: 50,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-  },
-  {
-    title: "Yellow and Black Colors",
-    price: 70,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
-  },
-  {
-    title: "Blue Color",
-    price: 100,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%204.png",
-  },
-];
-
-const initialCartProducts = [
-  {
-    title: "Colors",
-    price: 100,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-    quantity: 1,
-  },
-  {
-    title: "Black and white Colors",
-    price: 50,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-    quantity: 2,
-  },
+  // Add more products here if needed
 ];
 
 function App() {
   const [showCart, setShowCart] = useState(false);
-  const [cartProducts, setCartProducts] = useState(initialCartProducts);
+  const [cartProducts, setCartProducts] = useState([]);
 
   const handleCartClick = () => {
     setShowCart(!showCart);
@@ -60,14 +43,7 @@ function App() {
   const addToCart = (title) => {
     const selectedProduct = productsArr.find(product => product.title === title);
     if (selectedProduct) {
-      const existingProductIndex = cartProducts.findIndex(product => product.title === title);
-      if (existingProductIndex !== -1) {
-        const updatedCartProducts = [...cartProducts];
-        updatedCartProducts[existingProductIndex].quantity++;
-        setCartProducts(updatedCartProducts);
-      } else {
-        setCartProducts(prevCartProducts => [...prevCartProducts, { ...selectedProduct, quantity: 1 }]);
-      }
+      setCartProducts(prevCartProducts => [...prevCartProducts, selectedProduct]);
     }
   };
 
@@ -75,7 +51,7 @@ function App() {
     setCartProducts(cartProducts.filter((product) => product.title !== title));
   };
 
-  const totalProductsInCart = cartProducts.reduce((total, product) => total + (product.quantity || 1), 0);
+  const totalProductsInCart = cartProducts.length;
 
   return (
     <Router>
@@ -98,7 +74,8 @@ function App() {
         </Navbar>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Product products={productsArr} addToCart={addToCart} />} />
+          <Route path="/products" element={<ProductList products={productsArr} addToCart={addToCart} />} />
+          <Route path="/product/:productId" element={<ShowProduct products={productsArr} />} /> 
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>

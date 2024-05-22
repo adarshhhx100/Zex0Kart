@@ -1,18 +1,22 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/esm/Container";
-import Button from "react-bootstrap/esm/Button";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
-function Product({ title, price, imageUrl, quantity, addToCart }) {
+function Product({ title, price, imageUrl, addToCart }) {
+  const navigate = useNavigate();
+
+  const handleShowProduct = () => {
+    navigate(`/product/${title}`);
+  };
+
   return (
     <Card style={{ width: "18rem", margin: "10px" }}>
-      <Card.Img variant="top" src={imageUrl} />
+      <Card.Img variant="top" src={imageUrl} onClick={handleShowProduct} style={{ cursor: "pointer" }} />
       <Card.Body>
-        <Card.Title>{title}</Card.Title>
-        <Card.Text>
-          Rs. {price} <br />
-          {quantity !== undefined && `Quantity: ${quantity}`}
-        </Card.Text>
+        <Card.Title onClick={handleShowProduct} style={{ cursor: "pointer" }}>{title}</Card.Title>
+        <Card.Text>Rs. {price}</Card.Text>
         <Button variant="primary" onClick={() => addToCart(title)}>
           Add Product
         </Button>
@@ -26,7 +30,7 @@ function ProductList({ products, addToCart }) {
     <Container>
       <div className="row justify-content-center">
         {products.map((product, index) => (
-          <div key={index} className="col-md-6 mb-4 d-flex align-items-center justify-content-center">
+          <div key={index} className="col-md-3 mb-4">
             <Product {...product} addToCart={addToCart} />
           </div>
         ))}
